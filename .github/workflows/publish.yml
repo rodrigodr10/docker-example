@@ -23,3 +23,8 @@ jobs:
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/items:v1
       - name: Generate tag
         run: echo "tag=$(mvn -q help:evaluate -Dexpression=project.version -DforceStdout)" >> $GITHUB_OUTPUT
+      - name: Generate Docker image
+        Run: | 
+          mvn spring-boot:build-image -DskipTests 
+            -Dspring-boot.build-image.imageName=
+${{ secrets.DOCKERHUB_USERNAME }}/items:${{ steps.project.outputs.tag }}
